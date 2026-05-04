@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blank Canvas Restorations & Carpentry | Calgary, Alberta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-base:    #090908;
+      --bg-surface: #111110;
+      --bg-raised:  #1A1A18;
+      --bg-border:  #2A2A27;
+      --text-1:     #F0EDE7;
+      --text-2:     #948E84;
+      --text-3:     #5A5550;
+      --accent:     #C8A96E;
+      --accent-dim: rgba(200,169,110,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Grain texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+
+    /* Ensure all sections appear above grain */
+    nav, section, footer { position: relative; z-index: 1; }
+
+    /* Logo — transparent PNG, no blend needed */
+    .logo-img {
+      filter: drop-shadow(0 0 12px rgba(200,169,110,0.18)) brightness(1.05);
+    }
+
+    /* ── Nav ── */
+    .nav-link {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover { color: var(--text-1); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2; /* sits above video + dark overlay, below text */
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(200,169,110,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 50% 0%, rgba(0,0,0,0.3) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .hero-headline {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: var(--text-1);
+      max-width: 900px;
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--text-2);
+      max-width: 480px;
+      margin-top: 28px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--text-1);
+      color: var(--bg-base);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--text-2);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border: 1px solid var(--bg-border);
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-ghost:hover {
+      color: var(--text-1);
+      border-color: var(--text-2);
+      transform: translateY(-1px);
+    }
+
+    /* ── Trust bar ── */
+    .trust-bar {
+      border-top: 1px solid var(--bg-border);
+      border-bottom: 1px solid var(--bg-border);
+      background: var(--bg-surface);
+    }
+
+    /* ── Section labels ── */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--text-1);
+    }
+
+    .section-body {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--text-2);
+    }
+
+    /* ── Service cards ── */
+    .service-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--bg-border);
+      padding: 40px 36px;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .service-card:hover {
+      border-color: rgba(200,169,110,0.3);
+      transform: translateY(-3px);
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.4),
+        0 0 0 1px rgba(200,169,110,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+
+    .service-number {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .service-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+      margin-bottom: 12px;
+    }
+
+    /* ── Portfolio grid ── */
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .portfolio-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      filter: grayscale(20%) brightness(0.85);
+    }
+    .portfolio-item:hover img {
+      transform: scale(1.04);
+      filter: grayscale(0%) brightness(0.9);
+    }
+    .portfolio-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(9,9,8,0.7) 0%, rgba(9,9,8,0.1) 50%, transparent 100%);
+      pointer-events: none;
+    }
+    .portfolio-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 24px;
+    }
+    .portfolio-label-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .portfolio-label-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-1);
+    }
+
+    /* ── Process steps ── */
+    .step-line {
+      width: 1px;
+      flex: 1;
+      background: linear-gradient(to bottom, var(--bg-border), transparent);
+    }
+
+    /* ── Values ── */
+    .value-card {
+      padding: 36px 32px;
+      border: 1px solid var(--bg-border);
+      background: var(--bg-surface);
+      transition: border-color 0.25s ease;
+    }
+    .value-card:hover {
+      border-color: rgba(200,169,110,0.25);
+    }
+
+    /* ── CTA section ── */
+    .cta-section {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--bg-border);
+      border-bottom: 1px solid var(--bg-border);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(200,169,110,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Footer ── */
+    .footer-link {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-3);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-link:hover { color: var(--text-2); }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--bg-border), transparent);
+    }
+
+    /* ── Scroll indicator ── */
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(6px); opacity: 0.4; }
+    }
+    .scroll-indicator { animation: scrollBounce 2s ease-in-out infinite; }
+
+    /* ── Mobile nav ── */
+    @media (max-width: 768px) {
+      .hidden-mobile { display: none !important; }
+      .nav-logo-img { height: 96px !important; }
+    }
+    @media (max-width: 480px) {
+      .hero-headline { font-size: clamp(38px, 11vw, 64px) !important; }
+      .hero-sub { font-size: 14px !important; }
+    }
+
+    /* ── Fade-in on scroll (JS-enhanced) ── */
+    .js-ready .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .js-ready .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════ NAV ═══════════════════ -->
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(9,9,8,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bg-border);">
+    <div style="max-width:1280px;margin:0 auto;padding:0 32px;height:128px;display:flex;align-items:center;justify-content:space-between;">
+      <!-- Logo — transparent PNG -->
+      <a href="#" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;">
+        <img src="brand%20assets/logo-transparent.png"
+             alt="Blank Canvas Restorations & Carpentry"
+             class="logo-img nav-logo-img"
+             style="height:130px;width:auto;" />
+      </a>
+
+      <!-- Nav links (desktop) -->
+      <div style="display:flex;align-items:center;gap:40px;" class="hidden-mobile">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#portfolio" class="nav-link">Portfolio</a>
+        <a href="#process" class="nav-link">Process</a>
+        <a href="#about" class="nav-link">About</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="#contact" class="btn-primary" style="padding:14px 28px;font-size:12px;">
+        Get a Quote
+      </a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section class="hero">
+
+    <!-- ─── VIDEO BACKGROUND ────────────────────────────────────────────────
+         REPLACE: swap /assets/sawdust-video.mp4 with your actual video file.
+         Ideal content: slow-motion sawdust falling, hand planing wood, chisel
+         work, or dust drifting through workshop light. 10–30 sec loop, 1080p.
+         Place the .mp4 file at: /assets/sawdust-video.mp4
+    ──────────────────────────────────────────────────────────────────────── -->
+    <video autoplay loop muted playsinline
+           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+      <source src="brand%20assets/6035504_Wooden_Piece_3840x2160.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Dark overlay — keeps white text legible over the video.
+         Adjust the last value (0.72) to make brighter (lower) or darker (higher). -->
+    <div style="position:absolute;inset:0;background:rgba(5,5,4,0.72);z-index:1;"></div>
+
+    <!-- Decorative gold top edge (z-index:3 = above overlay + ::before) -->
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(200,169,110,0.35),transparent);z-index:3;"></div>
+
+    <!-- Hero text content — z-index:3 keeps it above video + overlay + ::before -->
+    <div style="position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;width:100%;">
+
+      <div class="hero-eyebrow fade-up">Calgary, Alberta · Est. 2025</div>
+
+      <h1 class="hero-headline fade-up" style="transition-delay:0.1s;">
+        Craftsmanship<br/>Built to <em>Last.</em>
+      </h1>
+
+      <p class="hero-sub fade-up" style="transition-delay:0.2s;">
+        Custom carpentry and thoughtful restoration for homes and spaces that deserve to stand the test of time.
+      </p>
+
+      <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:48px;" class="fade-up">
+        <a href="#portfolio" class="btn-primary">View Our Work</a>
+        <a href="#contact" class="btn-ghost">Request a Quote</a>
+      </div>
+
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" style="position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:3;">
+      <span style="font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(240,237,231,0.5);">Scroll</span>
+      <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:rgba(240,237,231,0.4);">
+        <path d="M7 1v18M1 13l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ TRUST BAR ═══════════════════ -->
+  <div class="trust-bar">
+    <div style="max-width:1280px;margin:0 auto;padding:20px 32px;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:var(--accent);flex-shrink:0;">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--text-2);">LICENSED & INSURED</span>
+      </div>
+      <div style="width:1px;height:16px;background:var(--bg-border);"></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:var(--accent);flex-shrink:0;">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--text-2);">FAMILY-OWNED & OPERATED</span>
+      </div>
+      <div style="width:1px;height:16px;background:var(--bg-border);"></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:var(--accent);flex-shrink:0;">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--text-2);">CALGARY, ALBERTA</span>
+      </div>
+      <div style="width:1px;height:16px;background:var(--bg-border);"></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="color:var(--accent);flex-shrink:0;">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--text-2);">5-STAR RATED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SERVICES ═══════════════════ -->
+  <section id="services" style="padding:120px 32px;max-width:1280px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-bottom:80px;" class="fade-up">
+      <div>
+        <div class="section-label" style="margin-bottom:20px;">What We Do</div>
+        <h2 class="section-title">Every Space Deserves<br/>Exceptional Work.</h2>
+      </div>
+      <div style="padding-top:8px;">
+        <p class="section-body">
+          From precision carpentry to delicate wood restoration, we bring the same level of care and craft to every project — whether it's a full kitchen renovation or a single heirloom piece worth saving.
+        </p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;" class="fade-up">
+
+      <!-- Service 1 -->
+      <div class="service-card">
+        <div class="service-number">01</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" style="color:var(--text-1);">
+          <rect x="8" y="8" width="32" height="32" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="8" y1="18" x2="40" y2="18" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="20" y1="8" x2="20" y2="40" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <div class="service-name">Custom Carpentry</div>
+        <p class="section-body" style="font-size:14px;">Built-ins, shelving, cabinetry, and millwork designed and constructed to exact specification for your space.</p>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="service-card">
+        <div class="service-number">02</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" style="color:var(--text-1);">
+          <!-- Hand plane body -->
+          <rect x="6" y="28" width="36" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <!-- Frog/blade housing -->
+          <path d="M14 28v-9h11l9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Blade edge -->
+          <path d="M22 36v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Wood shaving curl -->
+          <path d="M8 42c3-1 5 2 9 1s5-3 8-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="service-name">Wood Restoration</div>
+        <p class="section-body" style="font-size:14px;">We repair, refinish, and breathe new life into damaged or aged wood — floors, beams, furniture, and trim.</p>
+      </div>
+
+      <!-- Service 3 -->
+      <div class="service-card">
+        <div class="service-number">03</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" style="color:var(--text-1);">
+          <path d="M12 36V20l12-12 12 12v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="18" y="28" width="12" height="8" stroke="currentColor" stroke-width="1.5" rx="0.5"/>
+        </svg>
+        <div class="service-name">Renovations</div>
+        <p class="section-body" style="font-size:14px;">Full-scope interior renovations with a focus on craftsmanship — kitchens, basements, and living spaces.</p>
+      </div>
+
+      <!-- Service 4 -->
+      <div class="service-card">
+        <div class="service-number">04</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" style="color:var(--text-1);">
+          <rect x="8" y="22" width="32" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M16 22V14M24 22V10M32 22V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M16 26v8M24 26v12M32 26v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="service-name">Trim & Millwork</div>
+        <p class="section-body" style="font-size:14px;">Crown moulding, baseboards, wainscoting, and decorative accents that define the character of a room.</p>
+      </div>
+
+      <!-- Service 5 -->
+      <div class="service-card">
+        <div class="service-number">05</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" style="color:var(--text-1);">
+          <path d="M10 36l4-4 4 4 4-4 4 4 4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10 28l4-4 4 4 4-4 4 4 4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+          <path d="M10 20l4-4 4 4 4-4 4 4 4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"/>
+        </svg>
+        <div class="service-name">Hardwood Flooring</div>
+        <p class="section-body" style="font-size:14px;">Installation, sanding, staining, and finishing of hardwood floors that will look great for decades.</p>
+      </div>
+
+      <!-- Service 6 -->
+      <div class="service-card">
+        <div class="service-number">06</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" style="color:var(--text-1);">
+          <!-- Brush handle -->
+          <path d="M38 8L22 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <!-- Ferrule band -->
+          <path d="M25.5 20.5l2 2" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Bristle head -->
+          <path d="M22 24c-1.5 1.5-5 3-5 8 3 1 6 0 8-3l-3-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Stain strokes on surface -->
+          <path d="M8 38h32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.45"/>
+          <path d="M8 42h22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.25"/>
+        </svg>
+        <div class="service-name">Finishing & Staining</div>
+        <p class="section-body" style="font-size:14px;">Expert staining, painting, and protective finishing applied with precision for a lasting, professional result.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider" style="margin:0 32px;"></div>
+
+  <!-- ═══════════════════ PORTFOLIO ═══════════════════ -->
+  <section id="portfolio" style="padding:120px 32px;">
+    <div style="max-width:1280px;margin:0 auto;">
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px;flex-wrap:wrap;gap:24px;" class="fade-up">
+        <div>
+          <div class="section-label" style="margin-bottom:16px;">Our Work</div>
+          <h2 class="section-title">Built with Pride,<br/>Finished with Care.</h2>
+        </div>
+        <a href="#contact" class="btn-ghost">See More Projects ↗</a>
+      </div>
+
+      <!-- Masonry-style grid -->
+      <div style="display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto;gap:3px;" class="fade-up">
+
+        <!-- Large feature — heritage window
+             REPLACE with your own project photo when ready -->
+        <div class="portfolio-item" style="grid-column:span 7;height:480px;">
+          <img src="https://images.unsplash.com/photo-1508965386566-d0d8cade38c9?w=900&h=480&auto=format&fit=crop&q=80" alt="Heritage Window Restoration" />
+          <div class="portfolio-label">
+            <div class="portfolio-label-tag">Window Restoration</div>
+            <div class="portfolio-label-name">Heritage Window Rebuild</div>
+          </div>
+        </div>
+
+        <!-- Right column: two stacked -->
+        <div style="grid-column:span 5;display:grid;grid-template-rows:1fr 1fr;gap:3px;">
+          <!-- REPLACE with your own hardwood floor project photo -->
+          <div class="portfolio-item" style="height:238px;">
+            <img src="https://images.unsplash.com/photo-1573869908170-64b53a60d8da?w=600&h=238&auto=format&fit=crop&q=80" alt="Hardwood Floor Refinishing" />
+            <div class="portfolio-label">
+              <div class="portfolio-label-tag">Restoration</div>
+              <div class="portfolio-label-name">Hardwood Floor Refinish</div>
+            </div>
+          </div>
+          <!-- REPLACE with your own carpentry/joinery detail photo -->
+          <div class="portfolio-item" style="height:238px;">
+            <img src="https://images.unsplash.com/photo-1645651964715-d200ce0939cc?w=600&h=238&auto=format&fit=crop&q=80" alt="Carpentry Detail Work" />
+            <div class="portfolio-label">
+              <div class="portfolio-label-tag">Custom Carpentry</div>
+              <div class="portfolio-label-name">Precision Joinery & Detail</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom row -->
+        <!-- REPLACE with your own heritage window frame / trim photo -->
+        <div class="portfolio-item" style="grid-column:span 4;height:320px;">
+          <img src="https://images.unsplash.com/photo-1509573563917-a778dc0a5477?w=500&h=320&auto=format&fit=crop&q=80" alt="Heritage Window Frame" />
+          <div class="portfolio-label">
+            <div class="portfolio-label-tag">Window Restoration</div>
+            <div class="portfolio-label-name">Heritage Window Frame</div>
+          </div>
+        </div>
+        <!-- REPLACE with your own wood restoration / refinishing photo -->
+        <div class="portfolio-item" style="grid-column:span 4;height:320px;">
+          <img src="https://images.unsplash.com/photo-1590529989936-f6efdf774c23?w=500&h=320&auto=format&fit=crop&q=80" alt="Wood Restoration" />
+          <div class="portfolio-label">
+            <div class="portfolio-label-tag">Restoration</div>
+            <div class="portfolio-label-name">Wood Restoration & Refinish</div>
+          </div>
+        </div>
+        <!-- REPLACE with your own custom carpentry / staircase photo -->
+        <div class="portfolio-item" style="grid-column:span 4;height:320px;">
+          <img src="https://images.unsplash.com/photo-1631396326838-de37e5f8bcbc?w=500&h=320&auto=format&fit=crop&q=80" alt="Custom Carpentry Work" />
+          <div class="portfolio-label">
+            <div class="portfolio-label-tag">Custom Carpentry</div>
+            <div class="portfolio-label-name">Custom Woodwork</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" style="margin:0 32px;"></div>
+
+  <!-- ═══════════════════ PROCESS ═══════════════════ -->
+  <section id="process" style="padding:120px 32px;background:var(--bg-surface);border-top:1px solid var(--bg-border);border-bottom:1px solid var(--bg-border);">
+    <div style="max-width:1280px;margin:0 auto;">
+
+      <div style="text-align:center;margin-bottom:80px;" class="fade-up">
+        <div class="section-label" style="margin-bottom:16px;">How It Works</div>
+        <h2 class="section-title">A Process as Careful<br/>as the Craft Itself.</h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;position:relative;" class="fade-up">
+
+        <!-- Connecting line (desktop) -->
+        <div style="position:absolute;top:32px;left:10%;right:10%;height:1px;background:linear-gradient(to right,transparent,var(--bg-border) 15%,var(--bg-border) 85%,transparent);display:none;" id="process-line"></div>
+
+        <!-- Step 1 -->
+        <div style="padding:40px 32px;text-align:center;position:relative;">
+          <div style="width:64px;height:64px;border:1px solid var(--bg-border);background:var(--bg-raised);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;position:relative;z-index:1;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--accent);">01</span>
+          </div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--text-1);margin-bottom:12px;">Consultation</div>
+          <p class="section-body" style="font-size:13px;">We meet at your space, understand your vision, take measurements, and discuss timeline and budget honestly.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div style="padding:40px 32px;text-align:center;border-left:1px solid var(--bg-border);">
+          <div style="width:64px;height:64px;border:1px solid var(--bg-border);background:var(--bg-raised);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;position:relative;z-index:1;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--accent);">02</span>
+          </div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--text-1);margin-bottom:12px;">Design & Plan</div>
+          <p class="section-body" style="font-size:13px;">We provide a detailed proposal, material selections, and a clear project plan before any work begins.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div style="padding:40px 32px;text-align:center;border-left:1px solid var(--bg-border);">
+          <div style="width:64px;height:64px;border:1px solid var(--bg-border);background:var(--bg-raised);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;position:relative;z-index:1;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--accent);">03</span>
+          </div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--text-1);margin-bottom:12px;">Build</div>
+          <p class="section-body" style="font-size:13px;">Our craftsmen get to work — methodically, cleanly, and without cutting corners. We keep you informed throughout.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div style="padding:40px 32px;text-align:center;border-left:1px solid var(--bg-border);">
+          <div style="width:64px;height:64px;border:1px solid var(--bg-border);background:var(--bg-raised);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;position:relative;z-index:1;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--accent);">04</span>
+          </div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--text-1);margin-bottom:12px;">Final Walkthrough</div>
+          <p class="section-body" style="font-size:13px;">We review every detail together. We don't call it done until you're fully satisfied — no exceptions.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ VALUES / ABOUT ═══════════════════ -->
+  <section id="about" style="padding:120px 32px;">
+    <div style="max-width:1280px;margin:0 auto;">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center;margin-bottom:100px;" class="fade-up">
+        <!-- Left: Image -->
+        <div style="position:relative;">
+          <div style="aspect-ratio:4/5;overflow:hidden;">
+            <!-- REPLACE with a photo of your team or craftsman at work in the shop -->
+            <img src="https://images.unsplash.com/photo-1772207896656-4210003d65ee?w=680&h=850&auto=format&fit=crop&q=80" alt="Craftsman at work" style="width:100%;height:100%;object-fit:cover;filter:grayscale(15%);" />
+            <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,169,110,0.08) 0%,transparent 60%);mix-blend-mode:multiply;"></div>
+          </div>
+          <!-- Accent box -->
+          <div style="position:absolute;bottom:-24px;right:-24px;background:var(--bg-surface);border:1px solid var(--bg-border);padding:28px 32px;min-width:180px;">
+            <div style="font-size:40px;font-weight:900;letter-spacing:-0.04em;color:var(--text-1);line-height:1;">5+</div>
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-3);margin-top:6px;">Years of<br/>Excellence</div>
+          </div>
+        </div>
+
+        <!-- Right: Text -->
+        <div>
+          <div class="section-label" style="margin-bottom:20px;">About Us</div>
+          <h2 class="section-title" style="margin-bottom:28px;">We Take Pride<br/>in Every Cut.</h2>
+          <p class="section-body" style="margin-bottom:20px;">
+            Blank Canvas Restorations & Carpentry was built on a simple belief: every home deserves work done right. We're a Calgary-based team of skilled craftsmen who care deeply about the quality of what we build and restore.
+          </p>
+          <p class="section-body" style="margin-bottom:20px;">
+            We work primarily with residential clients who value craftsmanship over quick fixes — people who want work that will still look excellent in 20 years.
+          </p>
+          <p class="section-body">
+            Every project starts as a blank canvas. Our job is to make it something worth keeping.
+          </p>
+          <div style="margin-top:40px;padding-top:40px;border-top:1px solid var(--bg-border);">
+            <div style="font-size:13px;font-weight:600;color:var(--text-2);">— The Blank Canvas Team, Calgary, AB</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Values grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;" class="fade-up">
+
+        <div class="value-card">
+          <div style="width:36px;height:2px;background:var(--accent);margin-bottom:24px;"></div>
+          <div style="font-size:16px;font-weight:700;color:var(--text-1);margin-bottom:12px;">Precise</div>
+          <p class="section-body" style="font-size:13px;">Measurements matter. Tolerances matter. We don't approximate when perfection is possible.</p>
+        </div>
+
+        <div class="value-card">
+          <div style="width:36px;height:2px;background:var(--accent);margin-bottom:24px;"></div>
+          <div style="font-size:16px;font-weight:700;color:var(--text-1);margin-bottom:12px;">Skillful</div>
+          <p class="section-body" style="font-size:13px;">Years of hands-on experience inform every decision — from material choice to the final finish coat.</p>
+        </div>
+
+        <div class="value-card">
+          <div style="width:36px;height:2px;background:var(--accent);margin-bottom:24px;"></div>
+          <div style="font-size:16px;font-weight:700;color:var(--text-1);margin-bottom:12px;">Respectful</div>
+          <p class="section-body" style="font-size:13px;">Your home is your most important space. We treat it — and you — with the respect that deserves.</p>
+        </div>
+
+        <div class="value-card">
+          <div style="width:36px;height:2px;background:var(--accent);margin-bottom:24px;"></div>
+          <div style="font-size:16px;font-weight:700;color:var(--text-1);margin-bottom:12px;">Handmade</div>
+          <p class="section-body" style="font-size:13px;">No shortcuts, no mass production. Everything we make is built by hand, by people who care.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" style="margin:0 32px;"></div>
+
+  <!-- ═══════════════════ TESTIMONIALS ═══════════════════ -->
+  <section style="padding:120px 32px;background:var(--bg-surface);border-top:1px solid var(--bg-border);border-bottom:1px solid var(--bg-border);">
+    <div style="max-width:1280px;margin:0 auto;">
+
+      <div style="text-align:center;margin-bottom:72px;" class="fade-up">
+        <div class="section-label" style="margin-bottom:16px;">Testimonials</div>
+        <h2 class="section-title">Words from Our Clients.</h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;" class="fade-up">
+
+        <div style="padding:48px 40px;background:var(--bg-raised);border:1px solid var(--bg-border);">
+          <div style="display:flex;gap:4px;margin-bottom:28px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E" style="flex-shrink:0;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E" style="flex-shrink:0;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E" style="flex-shrink:0;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E" style="flex-shrink:0;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E" style="flex-shrink:0;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p style="font-size:16px;font-weight:500;line-height:1.7;color:var(--text-1);margin-bottom:32px;font-style:italic;">"They rebuilt our staircase from scratch and it's the first thing every guest notices when they walk in. Truly exceptional craftsmanship and they were incredibly tidy throughout."</p>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text-1);">Sarah M.</div>
+            <div style="font-size:11px;font-weight:500;color:var(--text-3);margin-top:4px;letter-spacing:0.06em;">Calgary, AB</div>
+          </div>
+        </div>
+
+        <div style="padding:48px 40px;background:var(--bg-raised);border:1px solid var(--bg-border);">
+          <div style="display:flex;gap:4px;margin-bottom:28px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p style="font-size:16px;font-weight:500;line-height:1.7;color:var(--text-1);margin-bottom:32px;font-style:italic;">"We had old hardwood floors that we thought were beyond saving. The team refinished them and they look better than new. Couldn't be happier — highly recommend."</p>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text-1);">James & Karen T.</div>
+            <div style="font-size:11px;font-weight:500;color:var(--text-3);margin-top:4px;letter-spacing:0.06em;">Calgary, AB</div>
+          </div>
+        </div>
+
+        <div style="padding:48px 40px;background:var(--bg-raised);border:1px solid var(--bg-border);">
+          <div style="display:flex;gap:4px;margin-bottom:28px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C8A96E"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p style="font-size:16px;font-weight:500;line-height:1.7;color:var(--text-1);margin-bottom:32px;font-style:italic;">"Our custom built-in library is absolutely stunning. Blank Canvas delivered exactly what we envisioned — on time, on budget, and with zero drama. Professional from start to finish."</p>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text-1);">David R.</div>
+            <div style="font-size:11px;font-weight:500;color:var(--text-3);margin-top:4px;letter-spacing:0.06em;">Calgary, AB</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ CTA / CONTACT ═══════════════════ -->
+  <section id="contact" class="cta-section" style="padding:120px 32px;">
+    <div style="max-width:800px;margin:0 auto;text-align:center;position:relative;z-index:1;">
+      <div class="section-label fade-up" style="margin-bottom:20px;">Start Your Project</div>
+      <h2 class="section-title fade-up" style="margin-bottom:24px;font-size:clamp(32px,5vw,56px);transition-delay:0.05s;">
+        Ready to Work<br/>with Real Craftsmen?
+      </h2>
+      <p class="section-body fade-up" style="margin-bottom:60px;max-width:520px;margin-left:auto;margin-right:auto;transition-delay:0.1s;">
+        Get in touch for a free consultation. We'll come to your space, listen to your vision, and give you an honest quote with no pressure.
+      </p>
+
+      <!-- Contact options -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:60px;text-align:center;" class="fade-up">
+
+        <a href="mailto:sales@blankcanvascarpentry.com" style="display:block;padding:32px 28px;background:var(--bg-raised);border:1px solid var(--bg-border);text-decoration:none;transition:border-color 0.2s ease,transform 0.2s ease;"
+           onmouseover="this.style.borderColor='rgba(200,169,110,0.3)';this.style.transform='translateY(-2px)';"
+           onmouseout="this.style.borderColor='var(--bg-border)';this.style.transform='none';">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Email Us</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text-1);">sales@blankcanvascarpentry.com</div>
+        </a>
+
+        <div style="padding:32px 28px;background:var(--bg-raised);border:1px solid var(--bg-border);">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Location</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text-1);">Calgary, Alberta, Canada</div>
+        </div>
+
+        <div style="padding:32px 28px;background:var(--bg-raised);border:1px solid var(--bg-border);">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Response Time</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text-1);">Within 24 Hours</div>
+        </div>
+
+      </div>
+
+      <!-- Primary CTA -->
+      <a href="mailto:sales@blankcanvascarpentry.com?subject=Project%20Inquiry%20-%20Blank%20Canvas&body=Hi%2C%20I%27d%20like%20to%20discuss%20a%20project.%0A%0AProject%20Type%3A%20%0ALocation%3A%20%0ATimeline%3A%20%0ABudget%20Range%3A%20%0A%0ADetails%3A%20"
+         class="btn-primary fade-up"
+         style="font-size:11px;padding:18px 48px;transition-delay:0.2s;">
+        Get a Free Consultation
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer style="padding:64px 32px 40px;border-top:1px solid var(--bg-border);background:var(--bg-base);">
+    <div style="max-width:1280px;margin:0 auto;">
+
+      <div style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:start;margin-bottom:48px;flex-wrap:wrap;">
+        <!-- Logo + tagline -->
+        <div>
+          <img src="brand%20assets/logo-transparent.png"
+               alt="Blank Canvas Restorations & Carpentry"
+               class="logo-img"
+               style="height:72px;width:auto;margin-bottom:20px;" />
+          <p style="font-size:13px;font-weight:400;line-height:1.7;color:var(--text-3);max-width:320px;">
+            Precision carpentry and thoughtful restoration for homes that deserve to last. Based in Calgary, Alberta.
+          </p>
+        </div>
+
+        <!-- Nav links -->
+        <div style="display:flex;gap:32px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:20px;">Navigate</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <a href="#services" class="footer-link">Services</a>
+              <a href="#portfolio" class="footer-link">Portfolio</a>
+              <a href="#process" class="footer-link">Process</a>
+              <a href="#about" class="footer-link">About</a>
+              <a href="#contact" class="footer-link">Contact</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider" style="margin-bottom:32px;"></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div style="font-size:11px;color:var(--text-3);">
+          © 2026 Blank Canvas Restorations & Carpentry. Calgary, Alberta.
+        </div>
+        <div style="font-size:11px;color:var(--text-3);">
+          <a href="mailto:sales@blankcanvascarpentry.com" class="footer-link">sales@blankcanvascarpentry.com</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // Enable animations only after JS is ready (prevents flash on screenshot)
+    document.documentElement.classList.add('js-ready');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Trigger hero + all currently visible elements
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.fade-up').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 200) {
+          setTimeout(() => el.classList.add('visible'), 120);
+        }
+      });
+    });
+
+    // Nav shadow on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        nav.style.boxShadow = '0 8px 40px rgba(0,0,0,0.5)';
+      } else {
+        nav.style.boxShadow = 'none';
+      }
+    }, { passive: true });
+
+    // Show desktop process line
+    const checkWidth = () => {
+      const line = document.getElementById('process-line');
+      if (line) line.style.display = window.innerWidth >= 768 ? 'block' : 'none';
+    };
+    window.addEventListener('resize', checkWidth);
+    checkWidth();
+  </script>
+</body>
+</html>
